@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Javascript XO game</title>
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-image: url("https://source.unsplash.com/NqFfiZzGyUs/1920x1080"); /* Adjust the size as needed */
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		margin: 0; /* Resetting default margin */
+}
+
+		.playground{
+			width:220px;
+			padding:1px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+		.box{
+			width:60px;
+			height: 60px;
+			margin: .2rem;
+			background-color: royalblue;
+			border-radius: .3rem;
+		}
+
+		.box:not(.x):not(.o):hover{
+			background-color: rgb(0,0,200);
+		}
+
+		.x{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: white;
+			background-color: blue;
+		}
+		.x::before{
+			content:"X";
+			font-size:2.2rem; 
+		}
+
+		.o{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: white;
+			background-color: deepskyblue ;
+		}
+		.o::before{
+			content:"O";
+			font-size:2.2rem; 
+		}
+		.heading{
+			position: absolute;
+			top: 10px;
+			left: 0;
+			right: 0;
+			text-align: center;
+			background-color: darkcyan;
+			color: white;
+			padding: 1rem;
+		
+		}
+		.reset{
+			position: absolute;
+			top: 80px;
+			left: 1100px;
+			right: 0;
+			text-align: center;
+			/* background-color: darkcyan; */
+			color: white;
+			padding: 1rem;
+		}
+		.reset button{
+			background-color: black;
+			border-radius: 1rem;
+			color: white;
+			padding: 1rem;
+			font-size: 1rem;
+			box-shadow: 0 0 10px black;
+			transition-duration: 0.4s;
+			border-radius: 1rem;
+		}
+		.reset button:hover{
+			background-color: white;;
+			color: black;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="heading">
+		<h2>WELCOME TO TIC TAC TOE</h2>
+	<!-- <h2 class="heading">WELCOME TO TIC TAC TOE</h2> -->
+	</div>
+	
+	<div class="playground">
+
+		<div class="box" id="0"></div>
+		<div class="box" id="1"></div>
+		<div class="box" id="2"></div>
+		<div class="box" id="3"></div>
+		<div class="box" id="4"></div>
+		<div class="box" id="5"></div>
+		<div class="box" id="6"></div>
+		<div class="box" id="7"></div>
+		<div class="box" id="8"></div>
+
+	</div>
+	<div class="reset">
+		<button onclick="reset()">Reset</button>
+	</div>
+	<script type="text/javascript">
+		const playground = document.querySelector(".playground");
+	
+		let flag = 1;
+	
+		const reset = () => {
+			document.querySelectorAll(".box").forEach(box => {
+				box.classList.remove("x");
+				box.classList.remove("o");
+			})
+		};
+	
+		playground.addEventListener("click", function (event) {
+			if (event.target.className !== "box") return;
+	
+			event.target.classList.add(flag ? "x" : "o")
+	
+			flag = !flag;
+	
+			let checkWinner = (player, winningCombination) => {
+				return winningCombination.some(combination => {
+					return combination.every(index => {
+						return playground.children[index].classList.contains(player)
+					})
+				})
+			}
+	
+			const winningCombination = [
+				[0, 1, 2],
+				[3, 4, 5],
+				[6, 7, 8],
+	
+				[0, 3, 6],
+				[1, 4, 7],
+				[2, 5, 8],
+	
+				[0, 4, 8],
+				[2, 4, 6]
+			]
+	
+			if (checkWinner("x", winningCombination)) {
+				alert("X is the winner");
+				reset();
+			} else if (checkWinner("o", winningCombination)) {
+				alert("O is the winner");
+				reset();
+			} else if (document.querySelectorAll(".x, .o").length === 9) {
+				alert("It's a draw");
+				reset();
+			}
+		});
+	</script>
+	
+</body>
+</html>
